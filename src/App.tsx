@@ -1,15 +1,43 @@
 import * as React from "react";
+import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
 import "./App.css";
 import { RootState } from "./redux/reducers";
+import { counterActions } from "./redux/actions";
 
 interface ConnectProps {
   counter: number;
+  onIncrement: (amount?: number) => void;
+  onIncrementAsync: (amount?: number) => void;
 }
 
 type Props = {} & ConnectProps;
 
-export class App extends React.PureComponent<Props> {
+interface State {
+  isLoading: boolean
+};
+
+export class App extends React.PureComponent<Props, State> {
+  constructor(props: ConnectProps) {
+    super(props);
+    this.state = { isLoading: false };
+  }
+
+  incrementByCurrVal() {
+    const { onIncrement } = this.props;
+    onIncrement(this.props.counter);
+  }
+
+  async incrementAsync() {
+    const { onIncrementAsync } = this.props;
+    await this.setState({
+      isLoading: true
+    });
+
+    await onIncrementAsync()
+    this.setState({ isLoading: false });
+  }
+
   render() {
     return (
       <>
@@ -20,6 +48,7 @@ export class App extends React.PureComponent<Props> {
             </div>
           </div>
         </section>
+        { this.state.isLoading && <span>Loading...</span> }
         <section className="container">
           <div className="level">
             <div className="level-item has-text-centered">
@@ -29,15 +58,14 @@ export class App extends React.PureComponent<Props> {
               </div>
             </div>
           </div>
-          {/* Challenge 5: <div className="notification is-danger" /> */}
           <div className="field is-grouped">
             <p className="control">
-              <button className="button" id="increment-btn">
+              <button onClick={ this.incrementByCurrVal.bind(this) } className="button" id="increment-btn">
                 Click to increment
               </button>
             </p>
             <p className="control">
-              <button className="button" id="delay-increment-btn">
+              <button onClick={ this.incrementAsync.bind(this) } className="button" id="delay-increment-btn">
                 Click to increment slowly
               </button>
             </p>
@@ -57,4 +85,10 @@ const mapStateToProps = (state: RootState) => ({
   counter: state.counter.value
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch: any) => // TODO: figure out this type
+  bindActionCreators({
+    onIncrement: counterActions.increment,
+    onIncrementAsync: counterActions.delayIncrement
+  }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

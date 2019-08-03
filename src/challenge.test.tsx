@@ -22,6 +22,10 @@ test("Challenge 1: Breadcrumb component", () => {
    *
    * When that's done, unskip this test and run `yarn test` in a console to see
    * the result.
+   *
+   * SEAN NOTE: we should talk about changing this, the concept of "significant digits"
+   * would actually mean "13.3" if you rounded to three significant digits. I think what
+   * was meant is to round the _decimal places_ to three with leading and trailing zeroes.
    */
 
   const component = mount(<Breadcrumb values={[0.2, 0.44456, 13.33]} />);
@@ -38,7 +42,7 @@ test("Challenge 1: Breadcrumb component", () => {
   ).toBe(true);
 });
 
-test.skip("Challenge 2: dispatching redux actions", () => {
+test("Challenge 2: dispatching redux actions", () => {
   /**
    * The App component is set up to display the current count for the counter
    * reducer.
@@ -74,7 +78,7 @@ test.skip("Challenge 2: dispatching redux actions", () => {
   expect(app.contains(<p className="title">{16}</p>)).toBe(true);
 });
 
-test.skip("Challenge 3: async redux actions", async () => {
+test("Challenge 3: async redux actions", async () => {
   /**
    * This test will have you watch the progress of an asynchronous action
    * dispatch. Redux Thunk is already included in the project, but feel free to
