@@ -19,6 +19,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules",

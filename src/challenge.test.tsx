@@ -7,6 +7,8 @@ import App from "./App";
 import { Breadcrumb } from "./Breadcrumb";
 import { configureStore } from "./redux";
 import { DELAY_MAX } from "./Server";
+//import { render } from "react-dom";
+import XReactDom from "react-dom";
 
 configure({ adapter: new Adapter() });
 
@@ -36,9 +38,31 @@ test("Challenge 1: Breadcrumb component", () => {
       </div>
     )
   ).toBe(true);
+
+  /**
+   * Notes on my attempt: 
+   * As it stands, compilation of this test results in an error
+   * "Index 0 closes the circle." This is something to do with the 
+   * stringify function, but I'm not sure how to resolve it.
+   * Ideally, this function would iterate through the Breadcrumb values
+   * array depending on the array's length and format each element 
+   * into a DOM structure.  
+   */
+
+  class Breadcrumb extends React.PureComponent<Props> {
+  <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+    <ul>
+      <li>{values[0]}</li>
+      <li>{values[1]}</li>
+      <li>{values[2]}</li>
+    </ul>
+   </nav>
+   }
+   ReactDOM.render(document.getElementById('root'));
+
 });
 
-test.skip("Challenge 2: dispatching redux actions", () => {
+skip.test("Challenge 2: dispatching redux actions", () => {
   /**
    * The App component is set up to display the current count for the counter
    * reducer.
